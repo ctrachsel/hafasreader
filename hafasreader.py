@@ -51,8 +51,8 @@ def simple_dict_list_writer(conn,filename, arguments, data):
     f.close()
 
 def parse_bahnhof(zip,filename):
-# key:Haltestellennummer
-# Haltestellennummer: first two digits are the UIC Countrycode. In Switzerland (85) the Station are managed by the http://www.bav.admin.ch/dokumentation/publikationen/00475/01497/index.html?lang=de . For any changes there is a form on the website. In Switzerland the longname could only be 30 digits. 
+    # key:Haltestellennummer
+    # Haltestellennummer: first two digits are the UIC Countrycode. In Switzerland (85) the Station are managed by the http://www.bav.admin.ch/dokumentation/publikationen/00475/01497/index.html?lang=de . For any changes there is a form on the website. In Switzerland the longname could only be 30 digits. 
     bahnhofen = []
     for line in fileinput.input([filename], openhook=zip.open):
         line = line.decode(charset).replace('\r', '').replace('\n', '')
@@ -77,8 +77,8 @@ def parse_bahnhof(zip,filename):
     return bahnhofen
 
 def parse_bfkoord(zip,filename):
-# key: Haltestellennummer
-# x,y in CH1903 format
+    # key: Haltestellennummer
+    # x,y in CH1903 format
     bfkoord = []
     for line in fileinput.input([filename], openhook=zip.open):
         haltestellennummer = line[:7].strip()
@@ -92,7 +92,7 @@ def parse_bfkoord(zip,filename):
     return bfkoord
 
 def parse_fplan(zip,filename,conn):
-# key: fahrtnummer, verwaltung
+    # key: fahrtnummer, verwaltung
     fplan = {}
     fplan['Z'] = [] # a new journey begins always with a z-row
     fplan['G'] = [] # which means of transport is used
@@ -194,7 +194,7 @@ def parse_fplan(zip,filename,conn):
         elif line[:2] == '*R':  # Which direction is marked on the mean of transportation
             item = { 'kennung': line[3:4].strip(),
                      'richtungscode': line[5:12].strip(),
-					 # could be a station (BAHNHOF) or specified in RICHTUNG
+                     # could be a station (BAHNHOF) or specified in RICHTUNG
                      'laufwegsindexab': line[13:20].strip(),
                      'laufwegsindexbis': line[21:28].strip(),
                      'indexab': line[29:35].strip(),
@@ -231,7 +231,7 @@ def parse_fplan(zip,filename,conn):
     return fplan
 
 def parse_dirwagen(zip,filename):
-# key: kurswagennummer
+    # key: kurswagennummer
     kw = []
     kwz_zeilen = []
     a_ve_zeilen = []
@@ -291,9 +291,9 @@ def parse_eckdaten(zip,filename):
     return eckdaten
 
 def parse_bitfeld(zip,filename,eckdaten):
-# key: bitfeldnummer
-# The bit field consists of 380 bits (days). The first bit represents the beginning the timetable period. after the last bit at the end of the timetable period every bit is set to 0.
-# For the data compact each 4 bits are to a hexadecimal digit summarized.
+    # key: bitfeldnummer
+    # The bit field consists of 380 bits (days). The first bit represents the beginning the timetable period. after the last bit at the end of the timetable period every bit is set to 0.
+    # For the data compact each 4 bits are to a hexadecimal digit summarized.
     bitfelds = []
     for line in fileinput.input([filename], openhook=zip.open):
         line = line.decode(charset).replace('\r', '').replace('\n', '')
@@ -308,8 +308,8 @@ def parse_bitfeld(zip,filename,eckdaten):
 
 
 def parse_bfkoord_geo(zip,filename):
-# key: Haltestellennummer
-# coordinates in wgs84 format
+    # key: Haltestellennummer
+    # coordinates in wgs84 format
     bfkoord_geo = []
     for line in fileinput.input([filename], openhook=zip.open):
         line = line.decode(charset).replace('\r', '').replace('\n', '')
@@ -324,8 +324,8 @@ def parse_bfkoord_geo(zip,filename):
     return bfkoord_geo
 
 def parse_umsteigb(zip,filename):
-# key: haltestellennummer
-# 9999999 is the default time for all transfers, which are not indicated specially
+    # key: haltestellennummer
+    # 9999999 is the default time for all transfers, which are not indicated specially
     umsteigb = []
     for line in fileinput.input([filename], openhook=zip.open):
         line = line.decode(charset).replace('\r', '').replace('\n', '')
@@ -335,9 +335,9 @@ def parse_umsteigb(zip,filename):
     return umsteigb
 
 def parse_bfprios(zip,filename):
-# key: Haltestellennummer
-# when there are different possabilities for a transfer between two journey. The station with the highest umsteigeprioritat is to use. 
-# Default is 8, min: Zero, max: 16
+    # key: Haltestellennummer
+    # when there are different possabilities for a transfer between two journey. The station with the highest umsteigeprioritat is to use. 
+    # Default is 8, min: Zero, max: 16
     bfprios = []
     for line in fileinput.input([filename], openhook=zip.open):
         line = line.decode(charset).replace('\r', '').replace('\n', '')
@@ -347,8 +347,8 @@ def parse_bfprios(zip,filename):
     return bfprios
 
 def parse_vereinig(zip,filename):
-# key: fahrtnummer1, fahrtnummer2, verwaltung1, verwaltung2
-# two trains are driving together (eg. lötschberger between bern-spiez, the the train is splitted (spiez-brig;spiez-zweisimmen)
+    # key: fahrtnummer1, fahrtnummer2, verwaltung1, verwaltung2
+    # two trains are driving together (eg. lötschberger between bern-spiez, the the train is splitted (spiez-brig;spiez-zweisimmen)
     vereinig = []
     for line in fileinput.input([filename], openhook=zip.open):
         line = line.decode(charset).replace('\r', '').replace('\n', '')
@@ -363,7 +363,7 @@ def parse_vereinig(zip,filename):
     return vereinig
 
 def parse_infotext(zip,filename):
-# key: infotextnummer
+    # key: infotextnummer
     infotext = []
     for line in fileinput.input([filename], openhook=zip.open):
         line = line.decode(charset).replace('\r', '').replace('\n', '')
@@ -373,7 +373,7 @@ def parse_infotext(zip,filename):
     return infotext
 
 def parse_kminfo(zip,filename):
-# key: haltestellennummer
+    # key: haltestellennummer
     kminfo = []
     for line in fileinput.input([filename], openhook=zip.open):
         line = line.decode(charset).replace('\r', '').replace('\n', '')
@@ -382,8 +382,11 @@ def parse_kminfo(zip,filename):
                        'wert' : line[8:13]})   # 300000 transfer allowed, 0 transfer not allowed
     return kminfo
 
+    
+    # if there are more than one definition for the transfertimes the most specific one 'wins'.     
 def parse_umsteigv(zip,filename):
-# key: haltestellennummer, verwaltungsbezeichnung1, verwaltungsbezeichnung2
+    # key: haltestellennummer, verwaltungsbezeichnung1, verwaltungsbezeichnung2
+    # is used, when one of the transport agency only has one mean of transportation. Then it is usefull to give the transfertimes globaly for all journey. eg. 
     umsteigv = []
     for line in fileinput.input([filename], openhook=zip.open):
         line = line.decode(charset).replace('\r', '').replace('\n', '')
@@ -398,13 +401,15 @@ def parse_umsteigv(zip,filename):
     return umsteigv
 
 def parse_umsteigl(zip,filename):
-# key: haltestellennummer, verwaltung1, verwaltung2, richtung1; richtung2, linie1, linie2
+    # key: haltestellennummer, verwaltung1, verwaltung2, richtung1; richtung2, linie1, linie2
+    # transfer dependend on direction. If there is a difference in transfertime between two means of transportation regarding the direcetion.
+
     umsteigl = []
     for line in fileinput.input([filename], openhook=zip.open):
         line = line.decode(charset).replace('\r', '').replace('\n', '')
 
         haltestellennummer = line[:7]
-        if haltestellennummer == '@@@@@@@':
+        if haltestellennummer == '@@@@@@@': #the time is used for each station which is not specialy marked. @@@@@@ can be combined with the other parameters.
             haltestellennummer = None
         umsteigl.append({'haltestellennummer' : haltestellennummer,
                          'verwaltung1' : line[8:14],
@@ -420,10 +425,12 @@ def parse_umsteigl(zip,filename):
     return umsteigl
 
 def parse_umsteigz(zip,filename):
-# key: haltestellennummer, fahrtnummer1, verwaltung1; fahrtnummer2, verwaltung2
+    # key: haltestellennummer, fahrtnummer1, verwaltung1; fahrtnummer2, verwaltung2
+    # transfertimes between journey. 
+    # if the time between the two trains is less than the transfertime, the transfer is not allowed (somekind strange way of blocking a transfer)
     umsteigz = []
     for line in fileinput.input([filename], openhook=zip.open):
-        line = line.decode(charset).replace('\r', '').replace('\n', '')
+        line = line.decode(charset).replace('\r', '').replace('\n', '')b
 
         haltestellennummer = line[:7]
         if haltestellennummer == '@@@@@@@':
@@ -438,22 +445,22 @@ def parse_umsteigz(zip,filename):
     return umsteigz
 
 def parse_gleis(zip,filename):
-# key: haltestellennummer, fahrtnummer, verhaltung
+    # key: haltestellennummer, fahrtnummer, verwaltung, verkehrstageschlussel
     gleis = []
     for line in fileinput.input([filename], openhook=zip.open):
         line = line.decode(charset).replace('\r', '').replace('\n', '')
         if line[0] == '%':
             continue #Nothing mentioned about this in docs??
         gleis.append({ 'haltestellennummer' : line[:7].strip(),
-                       'fahrtnummer' : line[8:13].strip(),
+                       'fahrtnummer' : line[8:13].strip(),    
                        'verwaltung' : line[14:20].strip(),
                        'gleisinformation' : line[21:29].strip(),
-                       'zeit' : line[30:34].strip(),
+                       'zeit' : line[30:34].strip(),  # is used when a mean of transportation passes the same station more than once in a journey
                        'verkehrstageschlussel' : line[35:41].strip()})
     return gleis
 
 def parse_betrieb(zip,filename):
-# key: kurzname
+    # key: kurzname
     betrieb1 = []
     betrieb2 = []
     for line in fileinput.input([filename], openhook=zip.open):
@@ -502,7 +509,7 @@ def parse_betrieb(zip,filename):
     return betrieb1,betrieb2
 
 def parse_attribut(zip,filename):
-# key: code
+    # key: code
     attribut1 = []
     attribut2 = []
     for line in fileinput.input([filename], openhook=zip.open):
@@ -520,7 +527,7 @@ def parse_attribut(zip,filename):
     return attribut1,attribut2
 
 def parse_richtung(zip,filename):
-# key: richtingschlussel
+    # key: richtingschlussel
     richtung = []
     for line in fileinput.input([filename], openhook=zip.open):
         line = line.decode(charset).replace('\r', '').replace('\n', '')
@@ -529,7 +536,7 @@ def parse_richtung(zip,filename):
     return richtung
 
 def parse_metabhf(zip,filename):
-# key: haltestellennummer1; haltestellennummer2
+    # key: haltestellennummer1; haltestellennummer2
     l_content = zip.read(filename).decode(charset).split('\r\n')[:-1]
     metabhf_ubergangbeziehung = []
     metabhf_ubergangbeziehung_a = []
@@ -560,7 +567,7 @@ def parse_metabhf(zip,filename):
     return metabhf_ubergangbeziehung,metabhf_ubergangbeziehung_a,metabhf_haltestellengruppen
 
 def parse_zugart(zip,filename):
-# key: code
+    # key: code
     zugart = []
     zugart_category = {}
     zugart_class = {}
@@ -597,7 +604,7 @@ def parse_zugart(zip,filename):
     return zugart
 
 def parse_durchbi(zip,filename):
-# key: fahrtnummer1, verwaltungfahrt1, fahrtnummer2, verwaltungfahrt2
+    # key: fahrtnummer1, verwaltungfahrt1, fahrtnummer2, verwaltungfahrt2, verkehrstagebitfeldnummer
     durchbi = []
     for line in fileinput.input([filename], openhook=zip.open):
         line = line.decode(charset).replace('\r', '').replace('\n', '')
@@ -615,7 +622,18 @@ def parse_durchbi(zip,filename):
     return durchbi
 
 def parse_zeitvs(zip,filename):
-# key: bahnhofsnummer
+    # key: bahnhofsnummer
+    # 1------+2----+3-----+4------+5---+6-------+7---+comment
+    # 0000000 +0100 +0200 30032014 0200 26102014 0300 %  Nahverkehrsdaten; MEZ=GMT+1
+    # 1 Haltestellennummer
+    # 2 normal timedelta to gmt
+    # 3 timesdelta to sommertime
+    # 4 Begin of summertime date
+    # 5 Begin of summertime time
+    # 6 End of summerimte date
+    # 7 End of summertime time
+	# if there is no representation of station in the file you have to decrease the stationnumber by one, aslong as you don't find a equivalent.
+
     zeitvs = {}
     for line in fileinput.input([filename], openhook=zip.open):
         line = line.decode(charset).replace('\r', '').replace('\n', '')
@@ -627,7 +645,7 @@ def parse_zeitvs(zip,filename):
         if (len(line) >= 17 and line[16] != '%'):
             item = { 'bahnhofsnummer' : bahnhofsnummer,
                      'zeitverschiebung1': line[8:13].strip(),
-                     'zeitverschiebung2': line[14:19].strip(), # TODO no docs
+                     'zeitverschiebung2': line[14:19].strip(), # timedelta to summertime
                      'vondatum': line[20:28].strip(),
                      'vonzugehorigezeit': line[29:33].strip(),
                      'bisdatum': line[34:42].strip(),
